@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colonel Sanders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000005;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: monospace;
+            user-select: text;
+            perspective: 2000px;
+        }
+
+        .universe {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            transform-style: preserve-3d;
+        }
+
+        .star {
+            position: absolute;
+            color: #FFE6E6;
+            animation: twinkle var(--twinkle-duration) ease-in-out infinite;
+            transform: translate(-50%, -50%) translateZ(var(--star-depth));
+            font-size: calc((var(--base-size) * 0.6) * var(--size-multiplier));
+            opacity: 0.7;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--min-opacity); text-shadow: 0 0 calc(4px * var(--size-multiplier)) #E4002B; }
+            50% { opacity: var(--max-opacity); text-shadow: 0 0 calc(8px * var(--size-multiplier)) #E4002B; }
+        }
+
+        .galaxy-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            animation: rotate3d 180s linear infinite;
+            font-size: min(1.2vmin, 8px);
+            line-height: 1;
+            white-space: pre;
+            text-align: center;
+            scale: var(--galaxy-scale);
+        }
+
+        .galaxy-arm {
+            position: absolute;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes rotate3d {
+            from { 
+                transform: translate(-50%, -50%) rotateX(65deg) rotateY(-15deg) rotateZ(360deg); 
+            }
+            to { 
+                transform: translate(-50%, -50%) rotateX(65deg) rotateY(-15deg) rotateZ(0deg); 
+            }
+        }
+
+        /* KFC Colors */
+        .text-white { 
+            color: #FFFFFF; 
+            text-shadow: 0 0 calc(5px * var(--size-multiplier)) rgba(255, 255, 255, 0.8); 
+        }
+        .text-red { 
+            color: #E4002B; 
+            text-shadow: 0 0 calc(5px * var(--size-multiplier)) rgba(228, 0, 43, 0.8); 
+        }
+        .text-brown { 
+            color: #8B4513; 
+            text-shadow: 0 0 calc(5px * var(--size-multiplier)) rgba(139, 69, 19, 0.8); 
+        }
+        .text-gray { 
+            color: #D3D3D3; 
+            text-shadow: 0 0 calc(5px * var(--size-multiplier)) rgba(211, 211, 211, 0.8); 
+        }
+        .text-core { 
+            color: #E4002B; 
+            text-shadow: 0 0 calc(20px * var(--size-multiplier)) rgba(228, 0, 43, 0.95),
+                         0 0 calc(35px * var(--size-multiplier)) rgba(139, 69, 19, 0.6); 
+        }
+
+        .spiral-text {
+            position: absolute;
+            transform-style: preserve-3d;
+            --size-multiplier: calc(1 + (var(--z-pos) + 100) / 200);
+            font-size: calc(var(--base-size) * var(--size-multiplier));
+        }
+
+        .text-overlay {
+            position: absolute;
+            left: 50%;
+            bottom: 10%;
+            transform: translateX(-50%);
+            color: #FFFFFF;
+            text-align: center;
+            z-index: 100;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            font-family: 'Roboto Slab', serif;
+            pointer-events: none;
+            width: 90%;
+        }
+
+        .text-overlay h1 {
+            font-size: clamp(24px, 5vw, 32px);
+            margin: 0 0 10px 0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: #E4002B;
+            text-shadow: 0 0 20px rgba(228, 0, 43, 0.5);
+        }
+
+        .text-overlay p {
+            font-size: clamp(16px, 3.5vw, 20px);
+            margin: 0 auto;
+            line-height: 1.5;
+            max-width: 600px;
+            color: #FFFFFF;
+            font-weight: 400;
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            pointer-events: all;
+        }
+
+        .social-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(228, 0, 43, 0.3);
+            border: 1px solid #E4002B;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: rgba(228, 0, 43, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .galaxy-container {
+                --galaxy-scale: 0.8;
+                --base-size: 6px;
+            }
+            .text-overlay h1 {
+                font-size: clamp(24px, 5vw, 28px);
+            }
+            .text-overlay p {
+                font-size: clamp(16px, 3.5vw, 18px);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .galaxy-container {
+                --galaxy-scale: 1.2;
+                --base-size: 8px;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .galaxy-container {
+                --galaxy-scale: 0.67;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="universe" id="universe"></div>
+    <div class="text-overlay">
+        <h1>Colonel Harland Sanders</h1>
+        <p>Retired Poker Professional • NVIDIA Whale • Luna OG</p>
+        <div class="social-links">
+            <a href="https://x.com/KFCandCrypto" target="_blank">Twitter</a>
+            <a href="https://t.me/ColonelHarlandSanders" target="_blank">Telegram</a>
+        </div>
+    </div>
+
+    <script>
+        // ASCII art for rotating chicken leg
+        const chickenLegFrames = [
+            '🍗',
+            '\\🍗',
+            '_🍗',
+            '/🍗'
+        ];
+        
+        let frameIndex = 0;
+        
+        function getRandomChar() {
+            return chickenLegFrames[frameIndex];
+        }
+
+        function rotateFrame() {
+            frameIndex = (frameIndex + 1) % chickenLegFrames.length;
+            init();
+        }
+
+        function calculateStarCount() {
+            const screenArea = window.innerWidth * window.innerHeight;
+            return Math.min(Math.floor(screenArea / 4000), 250);
+        }
+
+        function createStars(count) {
+            const universe = document.getElementById('universe');
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                const depth = Math.random() * 200 - 100;
+                const sizeMultiplier = 1 + (depth + 100) / 200;
+                
+                star.className = 'star';
+                star.textContent = getRandomChar();
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--star-depth', `${depth}px`);
+                star.style.setProperty('--size-multiplier', sizeMultiplier);
+                star.style.setProperty('--base-size', '10px');
+                star.style.setProperty('--min-opacity', 0.2 * sizeMultiplier);
+                star.style.setProperty('--max-opacity', 0.8 * sizeMultiplier);
+                star.style.setProperty('--twinkle-duration', `${2 + Math.random() * 3}s`);
+                
+                universe.appendChild(star);
+            }
+        }
+
+        function createGalaxy() {
+            const universe = document.getElementById('universe');
+            const container = document.createElement('div');
+            container.className = 'galaxy-container';
+
+            const arms = 4;
+            const pointsPerArm = 190;
+            
+            for (let arm = 0; arm < arms; arm++) {
+                const armElement = document.createElement('div');
+                armElement.className = 'galaxy-arm';
+                armElement.style.transform = `rotate(${(360 / arms) * arm}deg)`;
+
+                for (let i = 0; i < pointsPerArm; i++) {
+                    const t = i / pointsPerArm;
+                    const spiralRadius = 15 + Math.pow(t * 8, 1.2) * 40;
+                    const rotation = t * 4 * Math.PI + (arm * (2 * Math.PI / arms));
+                    
+                    const randSpread = (Math.random() - 0.5) * t * 40;
+                    const randAngle = (Math.random() - 0.5) * 0.2;
+                    
+                    const angle = rotation + randAngle;
+                    const radius = spiralRadius + randSpread;
+                    
+                    const x = Math.cos(angle) * radius;
+                    const y = Math.sin(angle) * radius;
+                    const z = (Math.random() - 0.5) * 150 * (1 - t);
+
+                    if (i % 2 === 0) {
+                        const particleCount = Math.floor(3 * Math.random()) + 1;
+                        for (let p = 0; p < particleCount; p++) {
+                            const spread = 8 * (1 - t * 0.7);
+                            const particleOffset = spread * (Math.random() - 0.5);
+                            const angleOffset = (Math.random() - 0.5) * 0.1;
+                            
+                            const px = Math.cos(angle + angleOffset) * (radius + particleOffset);
+                            const py = Math.sin(angle + angleOffset) * (radius + particleOffset);
+                            const pz = z + (Math.random() - 0.5) * 30;
+                            
+                            const sizeMultiplier = 1 + (pz + 100) / 150;
+                            
+                            const span = document.createElement('span');
+                            const colorClass = Math.random() < 0.4 ? 'text-white' :
+                                             Math.random() < 0.7 ? 'text-red' :
+                                             Math.random() < 0.9 ? 'text-brown' : 'text-gray';
+                            span.className = `spiral-text ${colorClass}`;
+                            span.textContent = getRandomChar();
+                            span.style.position = 'absolute';
+                            span.style.left = `${px}px`;
+                            span.style.top = `${py}px`;
+                            span.style.setProperty('--z-pos', pz);
+                            span.style.transform = `translateZ(${pz}px) scale(${sizeMultiplier})`;
+                            span.style.opacity = Math.max(0.1, 1 - t * 0.8) * sizeMultiplier;
+                            armElement.appendChild(span);
+                        }
+                    }
+                }
+
+                container.appendChild(armElement);
+            }
+
+            universe.appendChild(container);
+        }
+
+        function init() {
+            const universe = document.getElementById('universe');
+            universe.innerHTML = '';
+            createStars(calculateStarCount());
+            createGalaxy();
+        }
+
+        init();
+        setInterval(rotateFrame, 500); // Rotate chicken leg every 500ms
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(init, 250);
+        });
+    </script>
+</body>
+</html>
